@@ -1,8 +1,10 @@
 from setuptools import setup, find_packages
 
-__version__ = "1.0.0"
+__version__ = "0.0.1"
+
 setup(
     name="lazy-injector",
+    version=__version__,
     description="Simple dependency injection package",
     author="Petter Elenius Moe",
     author_email="pettermoe9530@gmail.com",

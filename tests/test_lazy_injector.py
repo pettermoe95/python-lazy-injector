@@ -192,3 +192,32 @@ def test_inject_with_other_default():
     assert my_int == int_inject
 
 
+
+class InitInject:
+
+    @inject
+    def __init__(self, *, arg1, my_str: str = lazy(str)) -> None:
+        self.arg1 = arg1
+        self.my_str = my_str
+
+    @inject
+    def before_and_after(self, a, my_str: str = lazy(str), *, b, my_int: int = lazy(int)):
+        return a, my_str, b, my_int
+
+
+@set_up
+def test_inject_into_init():
+    register(
+        Dependency(dependency_provider, str),
+        Dependency(lambda: 7, int)
+    )
+    init_inject = InitInject(arg1=1)
+    assert init_inject.my_str == dependency_provider()
+    assert init_inject.arg1 == 1
+
+    a, my_str, b, my_int = init_inject.before_and_after(a="a", b="b")
+    assert a == "a"
+    assert b == "b"
+    assert my_str == dependency_provider()
+    assert my_int == 7
+
