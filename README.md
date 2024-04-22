@@ -2,12 +2,12 @@
 Simple dependency injection framework for python
 
 # Installation
-Can be installed from source using the `pip install -e` command
+Can be installed from pypi:
 ```sh
-> pip install -e https://github.com/pettermoe95/python-lazy-injector
+> pip install lazy-injector
 ```
 # Usage
-#### Registering dependencies
+### Registering dependencies
 
 ```python
 from lazy_injector import register, Dependency
@@ -24,7 +24,7 @@ register(
     Dependency(sample_provider, Foo)
 )
 ```
-#### Injecting dependencies
+### Injecting dependencies
 There are two functions to use, the `inject` and the `lazy`. The lazy must we used to get the dependency as a
 default argument inside a function. I.e. `lazy(str)` will produce a placeholder default value that the laze_injector
 can look for. The function needs to have the `@inject` set as a decorator, so that the lazy_injector
