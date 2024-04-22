@@ -1,2 +1,5 @@
 testruns.py
+/__pycache__/
+.pytest_cache
 __pycache__
+**/__pycache__/

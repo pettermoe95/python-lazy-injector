@@ -124,3 +124,71 @@ def test_override_injection():
     )
     assert my_class.a == override_string
     assert my_int_class.a == override_int
+
+
+
+class MethodClass():
+
+    @inject
+    def inject_in_here(self, my_str: str = lazy(str)):
+        return my_str
+
+    @classmethod
+    @inject
+    def inject_class_method(cls, my_str: str = lazy(str)):
+        return my_str
+
+    @classmethod
+    @inject
+    def inject_class_method_many_args(cls, str_1: str, str_2: str, my_str: str = lazy(str), my_int: int = lazy(int), *args, **kwargs):
+        return str_1, str_2, my_str, my_int
+
+    @inject
+    def inject_with_other_default(self, my_str: str = lazy(str), some_int = 0, my_int: int = lazy(int)):
+        return my_str, some_int, my_int
+
+
+@set_up
+def test_inject_in_method():
+    register(
+        Dependency(dependency_provider, str),
+        Dependency(lambda: 123, int)
+    )
+    method_class = MethodClass()
+    assert method_class.inject_in_here() == dependency_provider()
+    assert method_class.inject_class_method() == dependency_provider()
+
+@set_up
+def test_inject_with_pos_args():
+    int_inject = 789
+    register(
+        Dependency(dependency_provider, str),
+        Dependency(lambda: int_inject, int)
+    )
+    method_class = MethodClass()
+    str_1, str_2, my_string, my_int = method_class.inject_class_method_many_args("str_1", "str_2", str_4="str_4")
+    assert str_1 == "str_1"
+    assert str_2 == "str_2"
+    assert my_string == dependency_provider()
+    assert my_int == int_inject
+
+
+@set_up
+def test_inject_with_other_default():
+    int_inject = 789
+    register(
+        Dependency(dependency_provider, str),
+        Dependency(lambda: int_inject, int)
+    )
+    method_class = MethodClass()
+    my_str, some_int, my_int = method_class.inject_with_other_default()
+    assert my_str == dependency_provider()
+    assert some_int == 0
+    assert my_int == int_inject
+
+    my_str, some_int, my_int = method_class.inject_with_other_default(my_str="override", some_int=1)
+    assert my_str == "override"
+    assert some_int == 1
+    assert my_int == int_inject
+
+
