@@ -1,6 +1,6 @@
 from typing import Tuple
-from dependency_injector import Dependency, reset, register, find_dependency, lazy, inject
-from dependency_injector.exceptions import DuplicateDependencyError
+from lazy_injector import Dependency, reset, register, find_dependency, lazy, inject, get_class_name
+from lazy_injector.exceptions import DuplicateDependencyError
 from pytest import raises
 
 def set_up(func):
@@ -36,6 +36,25 @@ def test_raises_duplicate_error():
             Dependency(dependency_provider, str)
         )
         assert err.type is type(DuplicateDependencyError)
+
+
+@set_up
+def test_find_dependency():
+    dep = Dependency(lambda: 456, int)
+    register(dep)
+    dep2 = find_dependency(int)
+    assert dep == dep2
+
+
+class MyTestClass():
+    ...
+
+
+def test_get_class_name():
+    assert get_class_name(MyTestClass) == "MyTestClass"
+    assert get_class_name(int) == "int"
+    assert get_class_name(123) == "int"
+    assert get_class_name(MyTestClass()) == "MyTestClass"
 
 
 

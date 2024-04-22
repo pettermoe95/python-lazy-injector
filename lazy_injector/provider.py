@@ -20,7 +20,6 @@ def register(*dependencies: Dependency):
         if getattr(Provider, attr_name, False):
             raise DuplicateDependencyError(f"""The dependency of type {attr_name} already exists
             consider using a factory for this""")
-        print(f"Registering {attr_name}...")
         setattr(Provider, attr_name, value)
         Provider.attrs_added.append(attr_name)
 
