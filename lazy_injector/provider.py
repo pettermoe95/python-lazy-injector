@@ -1,7 +1,7 @@
 from .dependency import Dependency, Lazy, get_class_name
 from .exceptions import DuplicateDependencyError
 from typing import Any, Dict, Type, List, Union
-from inspect import FullArgSpec, getfullargspec, isfunction, ismethod
+from inspect import FullArgSpec, getfullargspec
 import logging
 
 

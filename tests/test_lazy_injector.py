@@ -221,3 +221,5 @@ def test_inject_into_init():
     assert my_str == dependency_provider()
     assert my_int == 7
 
+
+    
