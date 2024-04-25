@@ -1,13 +1,9 @@
 from typing import Tuple
-from lazy_injector import Dependency, reset, register, find_dependency, lazy, inject, get_class_name
+from lazy_injector import Dependency, register, find_dependency, lazy, inject, get_class_name
 from lazy_injector.exceptions import DuplicateDependencyError
+from tests.utils import set_up
 from pytest import raises
 
-def set_up(func):
-    def wrapper(*args, **kwargs):
-        reset()
-        return func(*args, **kwargs)
-    return wrapper
 
 
 def dependency_provider():

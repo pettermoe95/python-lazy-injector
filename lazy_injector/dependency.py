@@ -1,4 +1,4 @@
-from typing import Callable, Type, Any
+from typing import Callable, Dict, Type, Any
 from inspect import isclass
 
 
